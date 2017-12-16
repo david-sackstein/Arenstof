@@ -19,6 +19,8 @@ public:
 
     friend std::ostream& operator <<(std::ostream &os, const ArenstofPoint& p);
 
+    void Update(long double ax, long double ay, long double dt);
+
 private:
 
     long double _x;

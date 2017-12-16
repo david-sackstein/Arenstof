@@ -13,6 +13,14 @@ ArenstofPoint::ArenstofPoint(
 {
 }
 
+void ArenstofPoint::Update(long double ax, long double ay, long double dt)
+{
+    _x = _x + _vx * dt;
+    _y = _y + _vy * dt;
+    _vx = _vx + ax * dt;
+    _vy = _vy + ay * dt;
+}
+
 std::ostream& operator << (std::ostream &os, const ArenstofPoint& p)
 {
     os << "(" << p._x << ", " << p._y << ")";
