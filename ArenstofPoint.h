@@ -6,6 +6,8 @@ class ArenstofPoint
 {
 public:
 
+    ArenstofPoint();
+
     ArenstofPoint(
             long double x,
             long double y,

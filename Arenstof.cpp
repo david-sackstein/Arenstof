@@ -4,34 +4,19 @@
 Arenstof::Arenstof(
     const ArenstofPoint &initialPoint,
     unsigned int n,
-    unsigned int m,
-    long double dt,
-    std::ostream &out)
+    long double dt)
     :
     _point(initialPoint),
     _n(n),
-    _m(m),
-    _dt(dt),
-    _out(out)
+    _dt(dt)
 {
 }
 
-long double expectedResults[] = {
-    9.940e-01, -3.416e+00,
-    -9.133e+02, -6.831e+00,
-    -1.836e+03, 3.101e+03,
-    5.186e+03, 9.339e+03,
-    2.815e+04, 6.373e+02,
-    3.652e+04, -5.925e+04,
-    -7.752e+04, -1.459e+05,
-    -3.808e+05, -1.577e+04,
-    -4.658e+05, 7.246e+05,
-    8.672e+05, 1.709e+06};
+void Arenstof::computePoints(ArenstofPoint *points, unsigned int m) {
 
-void Arenstof::compute() {
+    unsigned int pointIndex = 0;
 
-    unsigned int index = 0;
-    for (unsigned int i = 0; i < _n; i++, index++) {
+    for (unsigned int i = 0; i < _n; i++) {
 
         long double ax = 0;
         long double ay = 0;
@@ -40,19 +25,9 @@ void Arenstof::compute() {
 
         _point.Update(ax, ay, _dt);
 
-        printIfNecessary(index, i);
-    }
-}
-
-void Arenstof::printIfNecessary(unsigned int index, unsigned int i) const {
-    if (i % (_n / _m) == 0) {
-        ArenstofPoint expected (
-            expectedResults[2 * index],
-            expectedResults[2 * index + 1],
-            0, 0);
-
-        _out << "Actual   = " << _point << "\n";
-        _out << "Expected = " << expected << "\n";
+        if (i % (_n / m) == 0) {
+            points[pointIndex++] = _point;
+        }
     }
 }
 
@@ -77,8 +52,16 @@ int Arenstof::computeArenstof(
         long double dt,
         std::ostream &out) {
 
-    Arenstof arenstof(init, n, m, dt, out);
-    arenstof.compute();
+    Arenstof arenstof(init, n, dt);
+
+    ArenstofPoint* points = new ArenstofPoint[m];
+
+    arenstof.computePoints(points, m);
+
+    for (unsigned int i=0; i<m; i++)
+    {
+        out << points[i] << "\n";
+    }
 
     return 0;
 }

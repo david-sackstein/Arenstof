@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <cmath>
 #include "Arenstof.h"
 
 struct Args
@@ -12,6 +13,10 @@ struct Args
 	unsigned int n = 0;
 	unsigned int m = 0;
 };
+
+int RunTest(const Args &args);
+
+int RunExercise(std::ofstream &outputFile, const Args &args);
 
 bool FillArgsFromFile(const char* fileName, Args* args)
 {
@@ -75,6 +80,47 @@ bool FillArgs(int argc, char* argv[], Args* args)
 	}
 }
 
+const long double epsilon = 0.001;
+
+bool isDoubleEqual(long double lhs, long double rhs)
+{
+    return fabs(1 - (lhs / rhs)) < epsilon;
+}
+
+bool Test(const Args& args)
+{
+    long double expectedPoints[] = {
+            9.940e-01, -3.416e+00,
+            -9.133e+02, -6.831e+00,
+            -1.836e+03, 3.101e+03,
+            5.186e+03, 9.339e+03,
+            2.815e+04, 6.373e+02,
+            3.652e+04, -5.925e+04,
+            -7.752e+04, -1.459e+05,
+            -3.808e+05, -1.577e+04,
+            -4.658e+05, 7.246e+05,
+            8.672e+05, 1.709e+06};
+
+    ArenstofPoint init (args.x, args.y, args.vx, args.vy);
+
+    Arenstof arenstof(init, args.n, args.T/args.n);
+
+    ArenstofPoint* points = new ArenstofPoint[args.m];
+
+    arenstof.computePoints(points, args.m);
+
+    for (unsigned int i = 0; i<args.m; i++)
+    {
+        if (! isDoubleEqual(points[i].getX(), expectedPoints[i * 2]) ||
+            ! isDoubleEqual(points[i].getY(), expectedPoints[i * 2 + 1]))
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 int main(int argc, char* argv[])
 {
 	if (argc < 2 || argc > 3)
@@ -100,12 +146,33 @@ int main(int argc, char* argv[])
 		return EXIT_FAILURE;
 	}
 
+    //return RunTest(args);
+
+    return RunExercise(outputFile, args);
+}
+
+int RunExercise(std::ofstream &outputFile, const Args &args) {
+    ArenstofPoint init (args.x, args.y, args.vx, args.vy);
+
     int result = Arenstof::computeArenstof(
-        ArenstofPoint(args.x, args.y, args.vx, args.vy),
+        init,
         args.n,
 		args.m,
 		args.T / args.n,
 		outputFile);
+    return result;
+}
 
-	return 0;
+int RunTest(const Args &args) {
+    bool ok = Test(args);
+    if (ok)
+    {
+        std::cout << "PASSED\n";
+        return EXIT_SUCCESS;
+    }
+    else
+    {
+        std::cout << "FAILED\n";
+        return EXIT_FAILURE;
+    }
 }
