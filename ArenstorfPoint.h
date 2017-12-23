@@ -1,14 +1,13 @@
 #pragma once
-
 #include <ostream>
 
-class ArenstofPoint
+class ArenstorfPoint
 {
 public:
 
-    ArenstofPoint();
+    ArenstorfPoint();
 
-    ArenstofPoint(
+    ArenstorfPoint(
             long double x,
             long double y,
             long double vx,
@@ -19,7 +18,7 @@ public:
     long double getVX() const { return _vx; }
     long double getVY() const { return _vy; }
 
-    friend std::ostream& operator <<(std::ostream &os, const ArenstofPoint& p);
+    friend std::ostream& operator <<(std::ostream &os, const ArenstorfPoint& p);
 
     void Update(long double ax, long double ay, long double dt);
 

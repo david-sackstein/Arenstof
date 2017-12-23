@@ -1,8 +1,10 @@
 #include <cmath>
-#include "Arenstof.h"
+#include "Arenstorf.h"
 
-Arenstof::Arenstof(
-    const ArenstofPoint &initialPoint,
+using namespace std;
+
+Arenstorf::Arenstorf(
+    const ArenstorfPoint &initialPoint,
     unsigned int n,
     long double dt)
     :
@@ -12,7 +14,7 @@ Arenstof::Arenstof(
 {
 }
 
-void Arenstof::computePoints(ArenstofPoint *points, unsigned int m) {
+void Arenstorf::computePoints(ArenstorfPoint *points, unsigned int m) {
 
     unsigned int pointIndex = 0;
 
@@ -31,7 +33,7 @@ void Arenstof::computePoints(ArenstofPoint *points, unsigned int m) {
     }
 }
 
-void Arenstof::computeAcceleration(long double *ax, long double *ay)
+void Arenstorf::computeAcceleration(long double *ax, long double *ay)
 {
     long double x = _point.getX();
     long double y = _point.getY();
@@ -45,18 +47,18 @@ void Arenstof::computeAcceleration(long double *ax, long double *ay)
     *ay = y - 2 * vx - beta * y / D1 - alpha * y / D2;
 }
 
-int Arenstof::computeArenstof(
-        const ArenstofPoint &init,
+int Arenstorf::computeArenstof(
+        const ArenstorfPoint &init,
         unsigned int n,
         unsigned int m,
         long double dt,
-        std::ostream &out) {
+        ostream &out) {
 
-    Arenstof arenstof(init, n, dt);
+    Arenstorf arenstorf(init, n, dt);
 
-    ArenstofPoint* points = new ArenstofPoint[m];
+    ArenstorfPoint* points = new ArenstorfPoint[m];
 
-    arenstof.computePoints(points, m);
+    arenstorf.computePoints(points, m);
 
     for (unsigned int i=0; i<m; i++)
     {

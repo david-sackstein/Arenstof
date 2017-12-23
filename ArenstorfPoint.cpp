@@ -1,6 +1,7 @@
-#include "ArenstofPoint.h"
+#include <iostream>
+#include "ArenstorfPoint.h"
 
-ArenstofPoint::ArenstofPoint() :
+ArenstorfPoint::ArenstorfPoint() :
     _x(0),
     _y(0),
     _vx(0),
@@ -8,7 +9,7 @@ ArenstofPoint::ArenstofPoint() :
 {
 }
 
-ArenstofPoint::ArenstofPoint(
+ArenstorfPoint::ArenstorfPoint(
     long double x,
     long double y,
     long double vx,
@@ -21,7 +22,7 @@ ArenstofPoint::ArenstofPoint(
 {
 }
 
-void ArenstofPoint::Update(long double ax, long double ay, long double dt)
+void ArenstorfPoint::Update(long double ax, long double ay, long double dt)
 {
     _x = _x + _vx * dt;
     _y = _y + _vy * dt;
@@ -29,10 +30,11 @@ void ArenstofPoint::Update(long double ax, long double ay, long double dt)
     _vy = _vy + ay * dt;
 }
 
-std::ostream& operator << (std::ostream &os, const ArenstofPoint& p)
+std::ostream& operator << (std::ostream &os, const ArenstorfPoint& p)
 {
     //os << "(" << p._x << ", " << p._y << ")";
-    os << p._x << "\t" <<  p._y;
+    std::cout.precision(5);
+    os << p._x << ", " <<  p._y;
     return os;
 }
 

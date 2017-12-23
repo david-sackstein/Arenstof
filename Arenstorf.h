@@ -1,21 +1,21 @@
 #pragma once
 
-#include "ArenstofPoint.h"
+#include "ArenstorfPoint.h"
 #include <ostream>
 
-class Arenstof
+class Arenstorf
 {
 public:
 
-	Arenstof(
-			const ArenstofPoint &init,
+	Arenstorf(
+			const ArenstorfPoint &init,
 			unsigned int n,
 			long double dt);
 
-	void computePoints(ArenstofPoint *points, unsigned int m);
+	void computePoints(ArenstorfPoint *points, unsigned int m);
 
     static int computeArenstof(
-            const ArenstofPoint &init,
+            const ArenstorfPoint &init,
             unsigned int n,
             unsigned int m,
             long double dt,
@@ -28,7 +28,7 @@ private:
 	const long double alpha = 0.012299;
 	const long double beta = 1 - alpha;
 
-	ArenstofPoint _point;
+	ArenstorfPoint _point;
 	unsigned int _n;
 	long double _dt;
 };

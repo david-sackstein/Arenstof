@@ -1,7 +1,12 @@
 #include <iostream>
 #include <fstream>
 #include <cmath>
-#include "Arenstof.h"
+#include "Arenstorf.h"
+
+
+
+using namespace std;
+
 
 struct Args
 {
@@ -18,18 +23,24 @@ int RunTest(const Args &args);
 
 int RunExercise(std::ofstream &outputFile, const Args &args);
 
+/**
+ * fill arguments from input file
+ * @param fileName the name of the input file
+ * @param args a struct args
+ * @return true if the process succeeded, and false otherwise.
+ */
 bool FillArgsFromFile(const char* fileName, Args* args)
 {
-	std::ifstream inputFile(fileName);
+	ifstream inputFile(fileName);
 
 	if (! inputFile.is_open())
 	{
-		std::cerr << "Failed to open input file " << fileName << "\n";
+		cerr << "Failed to open input file " << fileName << "\n";
 		return false;
 	}
 
-	std::string line1;
-	std::string line2;
+	string line1;
+	string line2;
 
 	getline(inputFile, line1);
 	getline(inputFile, line2);
@@ -40,32 +51,44 @@ bool FillArgsFromFile(const char* fileName, Args* args)
 	return true;
 }
 
+/**
+ * fill arguments from user
+ * @param args a struct args
+ * @return true if the process succeeded, and false otherwise.
+ */
 bool FillArgsFromUser(Args* args)
 {
-	std::cout << "Enter initial pos x:\n";
-	std::cin >> args->x;
+	cout << "Enter initial pos x:\n";
+	cin >> args->x;
 
-	std::cout << "Enter initial pos y:\n";
-	std::cin >> args->y;
+	cout << "Enter initial pos y:\n";
+	cin >> args->y;
 
-	std::cout << "Enter initial vel x:\n";
-	std::cin >> args->vx;
+	cout << "Enter initial vel x:\n";
+	cin >> args->vx;
 
-	std::cout << "Enter initial vel y:\n";
-	std::cin >> args->vy;
+	cout << "Enter initial vel y:\n";
+	cin >> args->vy;
 
-	std::cout << "Enter total time T:\n";
-	std::cin >> args->T;
+	cout << "Enter total time T:\n";
+	cin >> args->T;
 
-	std::cout << "Enter num of steps:\n";
-	std::cin >> args->n;
+	cout << "Enter num of steps:\n";
+	cin >> args->n;
 
-	std::cout << "Enter num of steps to save:\n";
-	std::cin >> args->m;
+	cout << "Enter num of steps to save:\n";
+	cin >> args->m;
 
 	return true;
 }
 
+/**
+ * fill argument array
+ * @param argc number of arguments given
+ * @param argv an array of arguments
+ * @param args a struct args.
+ * @return true if the process succeeded, false otherwise.
+ */
 bool FillArgs(int argc, char* argv[], Args* args)
 {
 	if (argc == 3)
@@ -101,11 +124,11 @@ bool Test(const Args& args)
             -4.658e+05, 7.246e+05,
             8.672e+05, 1.709e+06};
 
-    ArenstofPoint init (args.x, args.y, args.vx, args.vy);
+    ArenstorfPoint init (args.x, args.y, args.vx, args.vy);
 
-    Arenstof arenstof(init, args.n, args.T/args.n);
+    Arenstorf arenstof(init, args.n, args.T/args.n);
 
-    ArenstofPoint* points = new ArenstofPoint[args.m];
+    ArenstorfPoint* points = new ArenstorfPoint[args.m];
 
     arenstof.computePoints(points, args.m);
 
@@ -125,16 +148,16 @@ int main(int argc, char* argv[])
 {
 	if (argc < 2 || argc > 3)
 	{
-		std::cerr << "Incorrect usage\n";
+		cerr << "Incorrect usage\n";
 		return EXIT_FAILURE;
 	}
 
 	const char* outputFileName = argv[argc-1];
 
-	std::ofstream outputFile(outputFileName);
+	ofstream outputFile(outputFileName);
 	if (! outputFile.is_open())
 	{
-		std::cerr << "Failed to open output file " << outputFileName << "\n";
+		cerr << "Failed to open output file " << outputFileName << "\n";
 		return EXIT_FAILURE;
 	}
 
@@ -151,10 +174,11 @@ int main(int argc, char* argv[])
     return RunExercise(outputFile, args);
 }
 
-int RunExercise(std::ofstream &outputFile, const Args &args) {
-    ArenstofPoint init (args.x, args.y, args.vx, args.vy);
+int RunExercise(ofstream &outputFile, const Args &args) {
 
-    int result = Arenstof::computeArenstof(
+	ArenstorfPoint init (args.x, args.y, args.vx, args.vy);
+
+    int result = Arenstorf::computeArenstof(
         init,
         args.n,
 		args.m,
@@ -167,12 +191,12 @@ int RunTest(const Args &args) {
     bool ok = Test(args);
     if (ok)
     {
-        std::cout << "PASSED\n";
+        cout << "PASSED\n";
         return EXIT_SUCCESS;
     }
     else
     {
-        std::cout << "FAILED\n";
+        cout << "FAILED\n";
         return EXIT_FAILURE;
     }
 }
