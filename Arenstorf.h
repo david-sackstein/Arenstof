@@ -3,10 +3,20 @@
 #include "ArenstorfPoint.h"
 #include <ostream>
 
+/**
+ * Represents an arenstorf. Holds calculate methods which calculate the acceleration and location
+ * of the ship at each time unit.
+ */
 class Arenstorf
 {
 public:
 
+	/**
+	 * Arenstorf constructor.
+	 * @param init the first point of the ship .
+	 * @param n number of times
+	 * @param dt
+	 */
 	Arenstorf(
 			const ArenstorfPoint &init,
 			unsigned int n,
@@ -14,19 +24,19 @@ public:
 
 	void computePoints(ArenstorfPoint *points, unsigned int m);
 
-    static int computeArenstof(
-            const ArenstorfPoint &init,
-            unsigned int n,
-            unsigned int m,
-            long double dt,
-            std::ostream &out);
+    static int computeArenstorf(
+			const ArenstorfPoint &init,
+			unsigned int n,
+			unsigned int m,
+			long double dt,
+			std::ostream &out);
 
 private:
 
-	void computeAcceleration(long double *ax, long double *ay);
+	void _computeAcceleration(long double *ax, long double *ay);
 
-	const long double alpha = 0.012299;
-	const long double beta = 1 - alpha;
+	const long double _alpha = 0.012299;
+	const long double _beta = 1 - _alpha;
 
 	ArenstorfPoint _point;
 	unsigned int _n;

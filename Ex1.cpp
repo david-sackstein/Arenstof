@@ -3,10 +3,12 @@
 #include <cmath>
 #include "Arenstorf.h"
 
-
-
 using namespace std;
 
+/**
+ * This is the main file. It has a main method which receives arguments from the user (by a file
+ * or by cin). Then, it creates an Arenstorf object and calculates its point in each time unit.
+ */
 
 struct Args
 {
@@ -29,11 +31,11 @@ int RunExercise(std::ofstream &outputFile, const Args &args);
  * @param args a struct args
  * @return true if the process succeeded, and false otherwise.
  */
-bool FillArgsFromFile(const char* fileName, Args* args)
+bool fillArgsFromFile(const char *fileName, Args *args)
 {
 	ifstream inputFile(fileName);
 
-	if (! inputFile.is_open())
+	if (!inputFile.is_open())
 	{
 		cerr << "Failed to open input file " << fileName << "\n";
 		return false;
@@ -56,7 +58,7 @@ bool FillArgsFromFile(const char* fileName, Args* args)
  * @param args a struct args
  * @return true if the process succeeded, and false otherwise.
  */
-bool FillArgsFromUser(Args* args)
+bool fillArgsFromUser(Args *args)
 {
 	cout << "Enter initial pos x:\n";
 	cin >> args->x;
@@ -89,17 +91,17 @@ bool FillArgsFromUser(Args* args)
  * @param args a struct args.
  * @return true if the process succeeded, false otherwise.
  */
-bool FillArgs(int argc, char* argv[], Args* args)
+bool FillArgs(int argc, char *argv[], Args *args)
 {
 	if (argc == 3)
 	{
-		const char* inputFileName = argv[1];
+		const char *inputFileName = argv[1];
 
-		return FillArgsFromFile (inputFileName, args);
+		return fillArgsFromFile(inputFileName, args);
 	}
 	else
 	{
-		return FillArgsFromUser (args);
+		return fillArgsFromUser(args);
 	}
 }
 
@@ -107,44 +109,44 @@ const long double epsilon = 0.001;
 
 bool isDoubleEqual(long double lhs, long double rhs)
 {
-    return fabs(1 - (lhs / rhs)) < epsilon;
+	return fabs(1 - (lhs / rhs)) < epsilon;
 }
 
-bool Test(const Args& args)
+bool Test(const Args &args)
 {
-    long double expectedPoints[] = {
-            9.940e-01, -3.416e+00,
-            -9.133e+02, -6.831e+00,
-            -1.836e+03, 3.101e+03,
-            5.186e+03, 9.339e+03,
-            2.815e+04, 6.373e+02,
-            3.652e+04, -5.925e+04,
-            -7.752e+04, -1.459e+05,
-            -3.808e+05, -1.577e+04,
-            -4.658e+05, 7.246e+05,
-            8.672e+05, 1.709e+06};
+	long double expectedPoints[] = {
+			9.940e-01, -3.416e+00,
+			-9.133e+02, -6.831e+00,
+			-1.836e+03, 3.101e+03,
+			5.186e+03, 9.339e+03,
+			2.815e+04, 6.373e+02,
+			3.652e+04, -5.925e+04,
+			-7.752e+04, -1.459e+05,
+			-3.808e+05, -1.577e+04,
+			-4.658e+05, 7.246e+05,
+			8.672e+05, 1.709e+06};
 
-    ArenstorfPoint init (args.x, args.y, args.vx, args.vy);
+	ArenstorfPoint init(args.x, args.y, args.vx, args.vy);
 
-    Arenstorf arenstof(init, args.n, args.T/args.n);
+	Arenstorf arenstof(init, args.n, args.T / args.n);
 
-    ArenstorfPoint* points = new ArenstorfPoint[args.m];
+	ArenstorfPoint *points = new ArenstorfPoint[args.m];
 
-    arenstof.computePoints(points, args.m);
+	arenstof.computePoints(points, args.m);
 
-    for (unsigned int i = 0; i<args.m; i++)
-    {
-        if (! isDoubleEqual(points[i].getX(), expectedPoints[i * 2]) ||
-            ! isDoubleEqual(points[i].getY(), expectedPoints[i * 2 + 1]))
-        {
-            return false;
-        }
-    }
+	for (unsigned int i = 0; i < args.m; i++)
+	{
+		if (!isDoubleEqual(points[i].getX(), expectedPoints[i * 2]) ||
+			!isDoubleEqual(points[i].getY(), expectedPoints[i * 2 + 1]))
+		{
+			return false;
+		}
+	}
 
-    return true;
+	return true;
 }
 
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
 	if (argc < 2 || argc > 3)
 	{
@@ -152,10 +154,10 @@ int main(int argc, char* argv[])
 		return EXIT_FAILURE;
 	}
 
-	const char* outputFileName = argv[argc-1];
+	const char *outputFileName = argv[argc - 1];
 
 	ofstream outputFile(outputFileName);
-	if (! outputFile.is_open())
+	if (!outputFile.is_open())
 	{
 		cerr << "Failed to open output file " << outputFileName << "\n";
 		return EXIT_FAILURE;
@@ -164,39 +166,41 @@ int main(int argc, char* argv[])
 	Args args;
 
 	bool ok = FillArgs(argc, argv, &args);
-	if (! ok)
+	if (!ok)
 	{
 		return EXIT_FAILURE;
 	}
 
-    //return RunTest(args);
+	//return RunTest(args);
 
-    return RunExercise(outputFile, args);
+	return RunExercise(outputFile, args);
 }
 
-int RunExercise(ofstream &outputFile, const Args &args) {
+int RunExercise(ofstream &outputFile, const Args &args)
+{
 
-	ArenstorfPoint init (args.x, args.y, args.vx, args.vy);
+	ArenstorfPoint init(args.x, args.y, args.vx, args.vy);
 
-    int result = Arenstorf::computeArenstof(
-        init,
-        args.n,
-		args.m,
-		args.T / args.n,
-		outputFile);
-    return result;
+	int result = Arenstorf::computeArenstorf(
+			init,
+			args.n,
+			args.m,
+			args.T / args.n,
+			outputFile);
+	return result;
 }
 
-int RunTest(const Args &args) {
-    bool ok = Test(args);
-    if (ok)
-    {
-        cout << "PASSED\n";
-        return EXIT_SUCCESS;
-    }
-    else
-    {
-        cout << "FAILED\n";
-        return EXIT_FAILURE;
-    }
+int RunTest(const Args &args)
+{
+	bool ok = Test(args);
+	if (ok)
+	{
+		cout << "PASSED\n";
+		return EXIT_SUCCESS;
+	}
+	else
+	{
+		cout << "FAILED\n";
+		return EXIT_FAILURE;
+	}
 }
