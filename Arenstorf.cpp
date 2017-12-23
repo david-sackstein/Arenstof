@@ -53,8 +53,11 @@ void Arenstorf::_computeAcceleration(long double *ax, long double *ay)
     long double vx = _point.getVX();
     long double vy = _point.getVY();
 
-    long double D1 = powl(((x + _alpha) * (x + _alpha) + y * y), 3.0 / 2.0);
-    long double D2 = powl(((x - _beta) * (x - _beta) + y * y), 3.0 / 2.0);
+    long double d1 = sqrtl((x + _alpha) * (x + _alpha) + y * y);
+    long double D1 = d1 * d1 * d1;
+
+    long double d2 = sqrtl((x - _beta) * (x - _beta) + y * y);
+    long double D2 = d2 * d2 * d2;
 
     *ax = x + 2 * vy - _beta * (x + _alpha) / D1 - _alpha * (x - _beta) / D2;
     *ay = y - 2 * vx - _beta * y / D1 - _alpha * y / D2;

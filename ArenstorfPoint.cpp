@@ -61,8 +61,8 @@ void ArenstorfPoint::update(long double ax, long double ay, long double dt)
 std::ostream &operator<<(std::ostream &os, const ArenstorfPoint &p)
 {
 	//os << "(" << p._x << ", " << p._y << ")";
-	std::cout.precision(5);
-	os << p._x << ", " << p._y;
+
+	os << p._x << "\t" << p._y;
 	return os;
 }
 
