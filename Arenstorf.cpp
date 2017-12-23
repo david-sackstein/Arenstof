@@ -3,6 +3,19 @@
 
 using namespace std;
 
+
+/**
+ * This file represents an arenstorf. Holds calculate methods which calculate the acceleration and
+ * location
+ * of the ship at each time unit.
+ */
+
+/**
+ * Arenstorf constructor.
+ * @param init the first point of the ship .
+ * @param n number of times to calculate
+ * @param dt
+ */
 Arenstorf::Arenstorf(
     const ArenstorfPoint &initialPoint,
     unsigned int n,
@@ -23,9 +36,9 @@ void Arenstorf::computePoints(ArenstorfPoint *points, unsigned int m) {
         long double ax = 0;
         long double ay = 0;
 
-        computeAcceleration(&ax, &ay);
+        _computeAcceleration(&ax, &ay);
 
-        _point.Update(ax, ay, _dt);
+        _point.update(ax, ay, _dt);
 
         if (i % (_n / m) == 0) {
             points[pointIndex++] = _point;
@@ -33,21 +46,21 @@ void Arenstorf::computePoints(ArenstorfPoint *points, unsigned int m) {
     }
 }
 
-void Arenstorf::computeAcceleration(long double *ax, long double *ay)
+void Arenstorf::_computeAcceleration(long double *ax, long double *ay)
 {
     long double x = _point.getX();
     long double y = _point.getY();
     long double vx = _point.getVX();
     long double vy = _point.getVY();
 
-    long double D1 = powl(((x + alpha) * (x + alpha) + y * y), 3.0 / 2.0);
-    long double D2 = powl(((x - beta) * (x - beta) + y * y), 3.0 / 2.0);
+    long double D1 = powl(((x + _alpha) * (x + _alpha) + y * y), 3.0 / 2.0);
+    long double D2 = powl(((x - _beta) * (x - _beta) + y * y), 3.0 / 2.0);
 
-    *ax = x + 2 * vy - beta * (x + alpha) / D1 - alpha * (x - beta) / D2;
-    *ay = y - 2 * vx - beta * y / D1 - alpha * y / D2;
+    *ax = x + 2 * vy - _beta * (x + _alpha) / D1 - _alpha * (x - _beta) / D2;
+    *ay = y - 2 * vx - _beta * y / D1 - _alpha * y / D2;
 }
 
-int Arenstorf::computeArenstof(
+int Arenstorf::computeArenstorf(
         const ArenstorfPoint &init,
         unsigned int n,
         unsigned int m,
