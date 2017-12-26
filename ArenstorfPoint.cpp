@@ -2,10 +2,9 @@
 #include "ArenstorfPoint.h"
 
 /**
- * This class represents an ArenstorfPoint. It holds the attributes x,y,vx,vy, which represent
+ * This file represents an ArenstorfPoint. It holds the attributes x,y,vx,vy, which represent
  * the velocity and point of the ship at each time unit.
  */
-
 
 /**
 * A default constructor, initializes the attributes with 0.
@@ -60,9 +59,9 @@ void ArenstorfPoint::update(long double ax, long double ay, long double dt)
  */
 std::ostream &operator<<(std::ostream &os, const ArenstorfPoint &p)
 {
-	//os << "(" << p._x << ", " << p._y << ")";
-
-	os << p._x << "\t" << p._y;
+	os << p._x << ", " << p._y << ", " << p._vx << "," << p._vy;
+//	os << p._x << "\t" << p._y;
 	return os;
 }
+
 
