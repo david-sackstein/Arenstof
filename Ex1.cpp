@@ -120,14 +120,16 @@ bool getUnsignedInteger(const char *message, unsigned int *value)
  */
 bool fillArgsFromUser(Args *args)
 {
-	return
-			getLongDouble(ENTER_POS_X, &args->x) &&
-			getLongDouble(ENTER_POS_Y, &args->y) &&
-			getLongDouble(ENTER_VEL_X, &args->vx) &&
-			getLongDouble(ENTER_VEL_Y, &args->vy) &&
-			getLongDouble(ENTER_TIME, &args->T) &&
-			getUnsignedInteger(ENTER_STEPS, &args->n) &&
-			getUnsignedInteger(ENTER_STEPS_TO_SAVE, &args->m);
+	getLongDouble(ENTER_POS_X, &args->x);
+	getLongDouble(ENTER_POS_Y, &args->y);
+	getLongDouble(ENTER_VEL_X, &args->vx);
+	getLongDouble(ENTER_VEL_Y, &args->vy);
+	getLongDouble(ENTER_TIME, &args->T);
+	getUnsignedInteger(ENTER_STEPS, &args->n);
+	getUnsignedInteger(ENTER_STEPS_TO_SAVE, &args->m);
+
+	return (!args->x || !args->y || !args->vx || !args->vy || !args->T || !args->n || !args->m);
+
 }
 
 /**

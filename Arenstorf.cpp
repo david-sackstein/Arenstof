@@ -120,8 +120,7 @@ int Arenstorf::computeArenstorf(
 
 	for (unsigned int i = 0; i < numSteps; i++)
 	{
-		out << points[i].getX() << "," << points[i].getY() << ",";
-//		out << points[i];
+		out << points[i];
 	}
 
 	out << "\n";
