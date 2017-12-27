@@ -4,6 +4,7 @@
 #include <fstream>
 #include <cmath>
 #include <iomanip>
+#include <limits>
 
 #define INPUT_FILE_OPEN_ERROR   "Failed to open input file "
 #define OUTPUT_FILE_OPEN_ERROR  "Failed to open output file "
@@ -68,30 +69,35 @@ bool fillArgsFromFile(const char *fileName, Args *args)
 
 	if (inputFile.fail())
 	{
-		cerr << INVALID_FILE_FORMAT << endl;
-
+		cerr << INVALID_FILE_FORMAT;
 		return false;
 	}
 
 	return true;
 }
 
+void checkAndResetInput(bool *flag)
+{
+	if (cin.fail())
+	{
+		//http://www.cplusplus.com/reference/ios/ios/clear/
+		cin.clear(ios::goodbit);
+		//http://www.cplusplus.com/reference/istream/istream/ignore/
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		*flag = false;
+	}
+}
 /**
  * Get long double from the user
  * @param message a message which has information on the wanted long double
  * @param value the value to fill
  * @return true if the paramter that was given is valid, false otherwise.
  */
-bool getLongDouble(const char *message, long double *value)
+void getLongDouble(const char *messageOut, long double *value, bool* flag)
 {
-	cout << message;
+	cout << messageOut;
 	cin >> *value;
-	if (cin.fail())
-	{
-		cerr << INVALID_PARAMETER_FORMAT << endl;
-		return false;
-	}
-	return true;
+	checkAndResetInput(flag);
 }
 
 /**
@@ -100,18 +106,12 @@ bool getLongDouble(const char *message, long double *value)
  * @param value the value to fill
  * @return true if the paramter that was given is valid, false otherwise.
  */
-bool getUnsignedInteger(const char *message, unsigned int *value)
+void getUnsignedInteger(const char *messageOut, unsigned int *value, bool *flag)
 {
-	cout << message;
+	cout << messageOut;
 	cin >> *value;
-	if (cin.fail())
-	{
-		cerr << INVALID_PARAMETER_FORMAT << endl;
-		return false;
-	}
-	return true;
+	checkAndResetInput(flag);
 }
-
 
 /**
  * Fill arguments from user
@@ -120,16 +120,23 @@ bool getUnsignedInteger(const char *message, unsigned int *value)
  */
 bool fillArgsFromUser(Args *args)
 {
-	getLongDouble(ENTER_POS_X, &args->x);
-	getLongDouble(ENTER_POS_Y, &args->y);
-	getLongDouble(ENTER_VEL_X, &args->vx);
-	getLongDouble(ENTER_VEL_Y, &args->vy);
-	getLongDouble(ENTER_TIME, &args->T);
-	getUnsignedInteger(ENTER_STEPS, &args->n);
-	getUnsignedInteger(ENTER_STEPS_TO_SAVE, &args->m);
+	bool flag = true;
 
-	return (!args->x || !args->y || !args->vx || !args->vy || !args->T || !args->n || !args->m);
+	getLongDouble(ENTER_POS_X, &args->x, &flag);
+	getLongDouble(ENTER_POS_Y, &args->y, &flag);
+	getLongDouble(ENTER_VEL_X, &args->vx, &flag);
+	getLongDouble(ENTER_VEL_Y, &args->vy, &flag);
+	getLongDouble(ENTER_TIME, &args->T, &flag);
+	getUnsignedInteger(ENTER_STEPS, &args->n, &flag);
+	getUnsignedInteger(ENTER_STEPS_TO_SAVE, &args->m, &flag);
 
+	if (!flag)
+	{
+		cerr << INVALID_PARAMETER_FORMAT << endl;
+		return false;
+	}
+
+	return true;
 }
 
 /**
